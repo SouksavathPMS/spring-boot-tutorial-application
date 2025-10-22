@@ -1,6 +1,7 @@
 package com.kyedev.springboottutorial.app.springboottutorialapplication.service;
 
 import com.kyedev.springboottutorial.app.springboottutorialapplication.entity.Department;
+import com.kyedev.springboottutorial.app.springboottutorialapplication.error.exceptions.DepartmentNotFoundException;
 import jakarta.annotation.Nullable;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface DepartmentService {
         @Nullable String address
     );
 
-    Department getDepartmentById(Long departmentId);
+    Department getDepartmentById(Long departmentId) throws DepartmentNotFoundException;
 
     void deleteDepartmentById(Long departmentId);
 

@@ -2,8 +2,12 @@ package com.kyedev.springboottutorial.app.springboottutorialapplication.controll
 
 
 import com.kyedev.springboottutorial.app.springboottutorialapplication.entity.Department;
+import com.kyedev.springboottutorial.app.springboottutorialapplication.error.exceptions.DepartmentNotFoundException;
 import com.kyedev.springboottutorial.app.springboottutorialapplication.service.DepartmentService;
 import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,14 +17,17 @@ import java.util.List;
 @RequestMapping(value = "/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
+    private final Logger logger;
 
     @Autowired
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
+        this.logger = LoggerFactory.getLogger(DepartmentController.class);
     }
 
     @PostMapping()
-    public Department saveDepartment(@RequestBody Department department) {
+    public Department saveDepartment(@Valid @RequestBody Department department) {
+        logger.info("Save Department {}", department);
         return departmentService.saveDepartment(department);
     }
 
@@ -34,7 +41,7 @@ public class DepartmentController {
     }
 
     @GetMapping(value = "/{departmentId}")
-    public Department getDepartmentById(@PathVariable("departmentId") Long departmentId) {
+    public Department getDepartmentById(@PathVariable("departmentId") Long departmentId) throws DepartmentNotFoundException {
         return departmentService.getDepartmentById(departmentId);
     }
 

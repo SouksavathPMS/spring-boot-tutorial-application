@@ -2,6 +2,7 @@ package com.kyedev.springboottutorial.app.springboottutorialapplication.service.
 
 
 import com.kyedev.springboottutorial.app.springboottutorialapplication.entity.Department;
+import com.kyedev.springboottutorial.app.springboottutorialapplication.error.exceptions.DepartmentNotFoundException;
 import com.kyedev.springboottutorial.app.springboottutorialapplication.repository.DepartmentRepository;
 import com.kyedev.springboottutorial.app.springboottutorialapplication.service.DepartmentService;
 import io.micrometer.common.lang.Nullable;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -76,10 +78,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public Department getDepartmentById(Long departmentId) {
-        return departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Department not found with id: " + departmentId));
+    public Department getDepartmentById(Long departmentId) throws DepartmentNotFoundException {
+        Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
+        if(optionalDepartment.isEmpty()) {
+            throw new DepartmentNotFoundException("Department with id " + departmentId + " not found");
+        }
+        return optionalDepartment.get();
     }
 
     @Override
