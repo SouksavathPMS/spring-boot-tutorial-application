@@ -1,10 +1,7 @@
 package com.kyedev.springboottutorial.app.springboottutorialapplication.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 @NoArgsConstructor
 @AllArgsConstructor
 @Validated
+@Builder
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
